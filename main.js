@@ -32,8 +32,14 @@ let eGrundkarteTirol = {
     nomenklatur: L.tileLayer("https://wmts.kartetirol.at/gdi_nomenklatur/{z}/{x}/{y}.png", {
         attribution: `Datenquelle: <a href="https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol">eGrundkarte Tirol</a>`,
         pane: "overlayPane",
+    }),
+    map: L.tileLayer("https://wmts.kartetirol.at/gdi_summer/{z}/{x}/{y}.png", {
+        attribution: `Datenquelle: <a href="https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol">eGrundkarte Tirol</a>`
     })
 }
+
+
+var miniMap = new L.Control.MiniMap(eGrundkarteTirol.map).addTo(map);
 
 // Hintergrundlayer eGrundkarte Tirol mit GPX-Route overlay
 L.control.layers({
@@ -60,11 +66,10 @@ L.control.scale({
 
 
 let controlElevation = L.control.elevation({
-    time:false,
+    time: false,
     elevationDiv: "#profile",
     height: 300,
     theme: "bike-tirol",
-
 }).addTo(map);
 controlElevation.load("data/etappe29.gpx");
 
@@ -74,14 +79,14 @@ let pulldown = document.querySelector("#pulldown");
 
 for (let etappe of ETAPPEN) {
     // console.log("Etappe: ", etappe);
-    let status ="";
+    let status = "";
     if (etappe.nr == 29) {
         status = " selected ";
     }
     pulldown.innerHTML += `<option ${status} value="${etappe.user}">Etappe ${etappe.nr}: ${etappe.titel}</option>`;
 }
 
-pulldown.onchange = function(evt) {
+pulldown.onchange = function (evt) {
     //console.log("Pulldown change event:", evt);
     // console.log("User: ", evt.target.value);
     let username = evt.target.value;
