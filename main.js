@@ -57,3 +57,41 @@ L.control.layers({
 L.control.scale({
     imperial: false,
 }).addTo(map);
+
+
+let controlElevation = L.control.elevation({
+    time:false,
+    elevationDiv: "#profile",
+    height: 300,
+    theme: "bike-tirol",
+
+}).addTo(map);
+controlElevation.load("data/etappe29.gpx");
+
+// console.log(ETAPPEN);
+
+let pulldown = document.querySelector("#pulldown");
+
+for (let etappe of ETAPPEN) {
+    // console.log("Etappe: ", etappe);
+    let status ="";
+    if (etappe.nr == 29) {
+        status = " selected ";
+    }
+    pulldown.innerHTML += `<option ${status} value="${etappe.user}">Etappe ${etappe.nr}: ${etappe.titel}</option>`;
+}
+
+pulldown.onchange = function(evt) {
+    //console.log("Pulldown change event:", evt);
+    // console.log("User: ", evt.target.value);
+    let username = evt.target.value;
+    let url = `https://${username}.github.io/biketirol`;
+    window.location.href = url;
+}
+
+//  Leaflet Minimap -> cdnjs
+new L.Control.MiniMap(L.tileLayer("https://wmts.kartetirol.at/gdi_summer/{z}/{x}/{y}.png", {
+    attribution: `Datenquelle: <a href="https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol">eGrundkarte Tirol</a>`
+}), {
+    toggleDisplay: true,
+}).addTo(map);
